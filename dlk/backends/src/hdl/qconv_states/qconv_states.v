@@ -312,16 +312,81 @@ module qconv_states (
         .finish(finish_read_kernel_wire)
         );
 
-    stub_state_machine #(.N(6)) ihw_low(
+    // stub_state_machine #(.N(6)) ihw_low(
+    //     .clk(clk),
+    //     .rst_n(rst_n),
+    //     .start(start_ihw_low),
+    //     .finish(finish_ihw_low_wire)
+    //     );
+
+
+//  ihw_low
+
+
+    parameter  IhwLowBitWidth = 2;
+    parameter  IhwLowNum = 3; 
+    localparam IhwLow_STATE_IDLE = 0;
+    localparam IhwLow_STATE_TRIGGER_IC = 1;
+    localparam IhwLow_STATE_WAIT_IC = 2;
+    localparam IhwLow_STATE_JUDGE_CONDITION = 3;
+
+
+    reg [IhwLowBitWidth-1:0] ih_low = 0;
+    reg [IhwLowBitWidth-1:0] iw_low = 0;    
+    reg [2:0] ihw_low_state = IhwLow_STATE_IDLE;
+
+
+
+    wire start_ic;
+    assign start_ic = ihw_low_state == IhwLow_STATE_TRIGGER_IC;
+    wire finish_ic_wire;
+    reg  finish_ic_reg = 0;
+    
+
+
+    always @(posedge clk ) begin
+        if (!rst_n || ihw_low_state == IhwLow_STATE_JUDGE_CONDITION) begin
+            finish_ic_reg <= 0;
+        end else if(ihw_low_state) begin
+            if(finish_ic_wire)begin
+                finish_ic_reg <= 1;
+            end
+        end
+    end
+
+    // wire finish_read_kernel = finish_read_kernel_reg; // redundant but keep this code for unity.
+    always @(posedge clk ) begin
+        case (ihw_low_state)
+            IhwLow_STATE_IDLE:             ihw_low_state <= ihw_low_state + start_ihw_low ? 1 : 0;
+            IhwLow_STATE_TRIGGER_IC:       ihw_low_state <= ihw_low_state + 1;
+            IhwLow_STATE_WAIT_IC:          ihw_low_state <= ihw_low_state + (finish_ic_reg ? 1 :0);
+            IhwLow_STATE_JUDGE_CONDITION:  ihw_low_state <= (ih_low == (IhwLowNum - 1)  && iw_low == (IhwLowNum - 1) ) ? IhwLow_STATE_IDLE : IhwLow_STATE_TRIGGER_IC;
+        endcase
+    end
+
+
+    always @(posedge clk) begin
+        if(!rst_n || ihw_low_state == IhwLow_STATE_IDLE )begin
+            ih_low <= 0;
+            iw_low <= 0;
+        end else if (ihw_low_state == IhwLow_STATE_JUDGE_CONDITION) begin
+            ih_low <= ih_low + (iw_low == (IhwLowNum - 1) ? 1 : 0);
+            iw_low <= iw_low == (IhwLowNum - 1) ? 0 : iw_low + 1;
+        end
+    end
+
+
+    assign finish_ihw_low_wire = ihw_low_state == IhwLow_STATE_JUDGE_CONDITION  && (ih_low == (IhwLowNum - 1)  && iw_low == (IhwLowNum - 1) );
+
+
+
+
+    stub_state_machine #(.N(5)) ic(
         .clk(clk),
         .rst_n(rst_n),
-        .start(start_ihw_low),
-        .finish(finish_ihw_low_wire)
+        .start(start_ic),
+        .finish(finish_ic_wire)
         );
-
-
-
-
 
 
     stub_state_machine #(.N(4)) thresholds(

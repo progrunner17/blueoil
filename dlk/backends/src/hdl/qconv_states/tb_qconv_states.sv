@@ -45,7 +45,7 @@ begin
 
     #1;
     start = 0;
-    repeat(250) @(posedge clk);    
+    repeat(350) @(posedge clk);    
     $finish;
 
     $finish;

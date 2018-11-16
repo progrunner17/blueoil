@@ -195,6 +195,9 @@ module qconv_states (
     end
 
 
+    assign finish_ihw_high_wire = ihw_high_state == IhwHigh_STATE_JUDGE_CONDITION  && (ih_high == (IhwHighNum - 1)  && iw_high == (IhwHighNum - 1) );
+
+
 
 
 
@@ -221,9 +224,6 @@ module qconv_states (
         .finish(finish_khw_wire)
         );
 
-
-
-    assign finish_ihw_high_wire = ihw_high_state == IhwHigh_STATE_JUDGE_CONDITION  && (ih_high == (IhwHighNum - 1)  && iw_high == (IhwHighNum - 1) );
 
 
 

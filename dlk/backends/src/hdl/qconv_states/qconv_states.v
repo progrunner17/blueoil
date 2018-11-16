@@ -217,12 +217,108 @@ module qconv_states (
         .finish(finish_init_outbuf_wire)
         );
 
-    stub_state_machine #(.N(7)) khw(
+    // stub_state_machine #(.N(7)) khw(
+    //     .clk(clk),
+    //     .rst_n(rst_n),
+    //     .start(start_khw),
+    //     .finish(finish_khw_wire)
+    //     );
+
+
+//  khw
+
+    parameter  KhwBitWidth = 2;
+    parameter  KhwNum = 3; 
+    localparam Khw_STATE_IDLE = 0;
+    localparam Khw_STATE_TRIGGER_READ_KERNEL = 1;
+    localparam Khw_STATE_WAIT_READ_KERNEL = 2;
+    localparam Khw_STATE_TRIGGER_IHW_LOW = 3;
+    localparam Khw_STATE_WAIT_IHW_LOW = 4;
+    localparam Khw_STATE_JUDGE_CONDITION = 5;
+
+
+    reg [KhwBitWidth-1:0] kh = 0;
+    reg [KhwBitWidth-1:0] kw = 0;    
+    reg [2:0] khw_state = Khw_STATE_IDLE;
+
+
+
+    wire start_read_kernel;
+    assign start_read_kernel = khw_state == Khw_STATE_TRIGGER_READ_KERNEL;
+    wire start_ihw_low;
+    assign start_ihw_low = khw_state == Khw_STATE_TRIGGER_IHW_LOW;
+    wire finish_read_kernel_wire;
+    wire finish_ihw_low_wire;
+    reg  finish_read_kernel_reg = 0;
+    reg  finish_ihw_low_reg = 0;
+
+
+    always @(posedge clk ) begin
+        if (!rst_n || khw_state == Khw_STATE_JUDGE_CONDITION) begin
+            finish_read_kernel_reg <= 0;
+        end else if(khw_state) begin
+            if(finish_read_kernel_wire)begin
+                finish_read_kernel_reg <= 1;
+            end
+        end
+    end
+
+
+    always @(posedge clk ) begin
+        if (!rst_n || khw_state == Khw_STATE_JUDGE_CONDITION) begin
+            finish_ihw_low_reg <= 0;
+        end else if(khw_state) begin
+            if(finish_ihw_low_wire)begin
+                finish_ihw_low_reg <= 1;
+            end
+        end
+    end
+
+
+    wire finish_read_kernel = finish_read_kernel_reg; // redundant but keep this code for unity.
+    always @(posedge clk ) begin
+        case (khw_state)
+            Khw_STATE_IDLE:                  khw_state <= khw_state + start_khw ? 1 : 0;
+            Khw_STATE_TRIGGER_READ_KERNEL:   khw_state <= khw_state + 1;
+            Khw_STATE_WAIT_READ_KERNEL:      khw_state <= khw_state + (finish_read_kernel ? 1 :0);
+            Khw_STATE_TRIGGER_IHW_LOW:       khw_state <= khw_state + 1;
+            Khw_STATE_WAIT_IHW_LOW:          khw_state <= khw_state + (finish_ihw_low_reg ? 1 :0);
+            Khw_STATE_JUDGE_CONDITION:       khw_state <= (kh == (KhwNum - 1)  && kw == (KhwNum - 1) ) ? Khw_STATE_IDLE : Khw_STATE_TRIGGER_READ_KERNEL;
+        endcase
+    end
+
+
+
+    always @(posedge clk) begin
+        if(!rst_n || khw_state == Khw_STATE_IDLE )begin
+            kh <= 0;
+            kw <= 0;
+        end else if (khw_state == Khw_STATE_JUDGE_CONDITION) begin
+            kh <= kh + (kw == (KhwNum - 1) ? 1 : 0);
+            kw <= kw == (KhwNum - 1) ? 0 : kw + 1;
+        end
+    end
+
+
+    assign finish_khw_wire = khw_state == Khw_STATE_JUDGE_CONDITION  && (kh == (KhwNum - 1)  && kw == (KhwNum - 1) );
+
+
+
+
+    stub_state_machine #(.N(5)) read_kernel(
         .clk(clk),
         .rst_n(rst_n),
-        .start(start_khw),
-        .finish(finish_khw_wire)
+        .start(start_read_kernel),
+        .finish(finish_read_kernel_wire)
         );
+
+    stub_state_machine #(.N(6)) ihw_low(
+        .clk(clk),
+        .rst_n(rst_n),
+        .start(start_ihw_low),
+        .finish(finish_ihw_low_wire)
+        );
+
 
 
 

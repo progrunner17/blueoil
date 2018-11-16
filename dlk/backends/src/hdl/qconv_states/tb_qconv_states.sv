@@ -6,7 +6,7 @@ module tb_qconv_states;
 // qconv_states Parameters
 parameter PERIOD          = 10;
 parameter OcHighBitWidth  = 4;
-parameter OcHighNum       = 4;
+parameter OcHighNum       = 3;
 
 // qconv_states Inputs
 reg   clk                                  = 0 ;
@@ -45,7 +45,7 @@ begin
 
     #1;
     start = 0;
-    repeat(350) @(posedge clk);    
+    repeat(2500) @(posedge clk);    
     $finish;
 
     $finish;

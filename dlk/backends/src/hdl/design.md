@@ -34,6 +34,6 @@ there can be several types of units. see[./design/calc_unit_discuss.png]
 
 
 ## timing
-
+[spreadsheet](https://docs.google.com/spreadsheets/d/1vuLFVfZyjgWhiUy8i6Kdp5oRs9EIJO7mR0NpXOelV7Y/edit?usp=sharing)
 ![](./design/calc_unit_timing.png)
  	

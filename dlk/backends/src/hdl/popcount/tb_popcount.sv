@@ -35,8 +35,10 @@ popcount64  u_popcount64 (
 );
 
 logic [31:0] i = 0;
+integer fd = 0;
 initial
 begin
+fd = $fopen("/dev/random","r");
     in = 0;
     #PERIOD
     $display (out );
@@ -53,7 +55,7 @@ begin
     #PERIOD
     $display (out);
     #PERIOD;
-    seed = $time();
+    seed = $fgetc(fd);
     $display(seed);
     repeat(10) begin
     in = {$urandom(seed),$urandom(seed)};

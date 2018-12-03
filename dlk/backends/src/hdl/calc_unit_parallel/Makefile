@@ -11,7 +11,7 @@ TARGET := $(MODULE)
 .PHONY:default
 default:
 	@echo "TARGET= $(TARGET)"
-	@echo "USAGE: make run"
+	@echo "USAGE: make test"
 	@echo
 	@echo "TODO: support for cuncurrent run" 
 	@echo "      current testbench only support non-concurrent run"
@@ -19,7 +19,7 @@ default:
 
 
 
-run: $(TARGET)
+test: $(TARGET)
 	./$(TARGET)
 
 $(TARGET): $(SRCS)

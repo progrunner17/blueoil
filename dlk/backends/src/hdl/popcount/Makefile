@@ -10,12 +10,12 @@ TARGET := $(MODULE)
 .PHONY:default
 default:
 	@echo "TARGET= $(TARGET)"
-	@echo "USAGE: make run"
+	@echo "USAGE: make test"
 	@echo
 	@echo "TODO: test bench support for each LATENCY and enable and concurrent execution" 
 
 
-run: $(TARGET)
+test: $(TARGET)
 	./$(TARGET)
 
 $(TARGET): $(SRCS)

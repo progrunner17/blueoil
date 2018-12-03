@@ -76,12 +76,14 @@ popcount64 #(
 
 logic [31:0] i = 0;
 integer fd = 0;
+
 initial
 begin
 fd = $fopen("/dev/random","r");
 
     seed = $fgetc(fd);
     repeat(10) begin
+    #6;
     d = {$urandom(seed),$urandom(seed)};
     answer = 0;
     #(PERIOD*2);

@@ -6,6 +6,8 @@ TEST_GEN := tb_generator
 TEST_BENCH := tb_$(MODULE).sv
 SRCS :=  $(TEST_BENCH) $(MODULE).v  $(foreach SUBMOD,$(SUBMODS),$(wildcard $(DIR)/$(SUBMOD)/*.v))
 TARGET := $(MODULE)
+VCD := tb_$(MODULE).vcd
+GTKW := $(MODULE).gtkw
 
 
 .PHONY:default
@@ -18,9 +20,16 @@ default:
 
 
 
-
+.PHONY:test
 test: $(TARGET)
 	./$(TARGET)
+
+$(VCD):$(TARGET)
+	./$(TARGET)
+
+.PHONY:waveform
+waveform: $(VCD)
+	open $(GTKW)
 
 $(TARGET): $(SRCS)
 	iverilog -o $@ -g2005-sv $(SRCS) 

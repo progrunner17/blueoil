@@ -1,0 +1,63 @@
+[*]
+[*] GTKWave Analyzer v3.3.95 (w)1999-2018 BSI
+[*] Mon Dec  3 08:13:35 2018
+[*]
+[dumpfile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/unroll_oc/unroll_oc.vcd"
+[dumpfile_mtime] "Mon Dec  3 08:06:11 2018"
+[dumpfile_size] 28872537
+[savefile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/unroll_oc/unroll_oc.gtkw"
+[timestart] 0
+[size] 1440 900
+[pos] -1 -1
+*-18.989014 125000 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_unroll_oc.
+[treeopen] tb_unroll_oc.inst_unroll_oc.
+[treeopen] tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].
+[sst_width] 267
+[signals_width] 425
+[sst_expanded] 1
+[sst_vpaned_height] 272
+@28
+tb_unroll_oc.clk
+tb_unroll_oc.start
+tb_unroll_oc.done
+tb_unroll_oc.error
++{STATE(ihw_low_ic_state[1:0])} tb_unroll_oc.inst_unroll_oc.ihw_low_ic_state[1:0]
+@22
+tb_unroll_oc.concurrent_check_addr[9:0]
+tb_unroll_oc.check_data_buf[255:0]
+tb_unroll_oc.answer[255:0]
+@28
+tb_unroll_oc.concurrent_check_valid
+@200
+-
+@22
+tb_unroll_oc.inst_unroll_oc.ic[4:0]
+tb_unroll_oc.inst_unroll_oc.ic_last[4:0]
+@200
+-
+@22
+tb_unroll_oc.inst_unroll_oc.iw_low_start[4:0]
+tb_unroll_oc.inst_unroll_oc.iw_low[4:0]
+tb_unroll_oc.inst_unroll_oc.iw_low_last[4:0]
+@200
+-
+@22
+tb_unroll_oc.inst_unroll_oc.ih_low_start[4:0]
+tb_unroll_oc.inst_unroll_oc.ih_low[4:0]
+tb_unroll_oc.inst_unroll_oc.ih_low_last[4:0]
+@200
+-
+@22
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.in_buf_rdata0[31:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.in_buf_rdata1[31:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.kn_buf_rdata[31:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.in_xnor_kn_popcnt0[5:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.in_xnor_kn_popcnt1[5:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.neg_kn_popcnt[5:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.data_wire[15:0]
+tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.data[15:0]
+@28
++{cnnect to out buffer write enable (data_valid)} tb_unroll_oc.inst_unroll_oc.gen_calc_unit[0].u_calc_unit_parallel.data_valid
+[pattern_trace] 1
+[pattern_trace] 0

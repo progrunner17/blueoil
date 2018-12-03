@@ -1,0 +1,27 @@
+[*]
+[*] GTKWave Analyzer v3.3.95 (w)1999-2018 BSI
+[*] Mon Dec  3 07:38:07 2018
+[*]
+[dumpfile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/popcount/tb_popcount.vcd"
+[dumpfile_mtime] "Mon Dec  3 07:37:20 2018"
+[dumpfile_size] 24928
+[savefile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/popcount/popcount.gtkw"
+[timestart] 0
+[size] 1920 782
+[pos] -1 -1
+*-15.512034 32700 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[sst_width] 193
+[signals_width] 391
+[sst_expanded] 1
+[sst_vpaned_height] 464
+@28
+tb_popcount64.clk
+@22
++{input data(d[63:0])} tb_popcount64.d[63:0]
+@24
++{latency0(q[6:0])} tb_popcount64.q[6:0]
++{latency1(q1[6:0])} tb_popcount64.q1[6:0]
++{latency2(q2[6:0])} tb_popcount64.q2[6:0]
++{latency3(q3[6:0])} tb_popcount64.q3[6:0]
+[pattern_trace] 1
+[pattern_trace] 0

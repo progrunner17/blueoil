@@ -1,0 +1,30 @@
+[*]
+[*] GTKWave Analyzer v3.3.95 (w)1999-2018 BSI
+[*] Mon Dec  3 08:02:11 2018
+[*]
+[dumpfile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/calc_unit_parallel/calc_unit_parallel.vcd"
+[dumpfile_mtime] "Mon Dec  3 08:01:48 2018"
+[dumpfile_size] 12670
+[savefile] "/Users/gotanda/workspace/blueoil/dlk/backends/src/hdl/calc_unit_parallel/calc_unit_parallel.gtkw"
+[timestart] 0
+[size] 1440 779
+[pos] -1 -1
+*-16.636360 41200 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] tb_calc_unit_parallel.
+[sst_width] 193
+[signals_width] 365
+[sst_expanded] 1
+[sst_vpaned_height] 375
+@28
++{input data LSB(in_buf_rdata0[31:0])} tb_calc_unit_parallel.in_buf_rdata0[31:0]
++{input data MSB (in_buf_rdata1[31:0])} tb_calc_unit_parallel.in_buf_rdata1[31:0]
+tb_calc_unit_parallel.kn_buf_rdata[31:0]
+@24
+tb_calc_unit_parallel.u_calc_unit_parallel.in_xnor_kn_popcnt0[5:0]
+tb_calc_unit_parallel.u_calc_unit_parallel.in_xnor_kn_popcnt1[5:0]
+tb_calc_unit_parallel.u_calc_unit_parallel.neg_kn_popcnt[5:0]
+@420
++{sum of popcounted data(data_wire[31:0])} tb_calc_unit_parallel.u_calc_unit_parallel.data_wire[31:0]
+tb_calc_unit_parallel.data[31:0]
+[pattern_trace] 1
+[pattern_trace] 0

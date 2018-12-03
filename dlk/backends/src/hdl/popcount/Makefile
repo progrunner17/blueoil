@@ -11,7 +11,7 @@ TARGET := $(MODULE)
 default:
 	@echo "TARGET= $(TARGET)"
 	@echo "USAGE: make test"
-	@echo
+	@echo "open the .vcd file with gtkwave for watching wave form"
 	@echo "TODO: test bench support for each LATENCY and enable and concurrent execution" 
 
 

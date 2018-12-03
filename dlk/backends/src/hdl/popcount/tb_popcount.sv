@@ -8,12 +8,15 @@ parameter PERIOD  = 10;
 
 
 // popcount64 Inputs
-reg   [63:0]  in                           = 0 ;
+reg   [63:0]  d                           = 0 ;
 
 // popcount64 Outputs
-wire  [6:0]  out                           ;
+wire  [6:0]  q                           ;
+wire  [6:0]  q1                           ;
+wire  [6:0]  q2                           ;
+wire  [6:0]  q3                           ;
 
-logic [6:0] tmp;
+logic [6:0] answer;
 
 logic clk = 0;
 logic rst_n = 0;
@@ -28,48 +31,69 @@ begin
     #(PERIOD*2) rst_n  =  1;
 end
 
-popcount64  u_popcount64 (
-    .in                      ( in   [63:0] ),
-
-    .out                     ( out  [6:0]  )
+popcount64 #(
+    .LATENCY(0)
+    ) u_popcount64 (
+    .clk                    ( clk       ),
+    .en                     ( 1'b1      ),
+    .d                      ( d  [63:0] ),
+    .q                      ( q  [6:0]  )
 );
+
+
+
+
+popcount64 #(
+    .LATENCY(1)
+    ) u_popcount64_1 (
+    .clk                    ( clk       ),
+    .en                     ( 1'b1      ),
+    .d                      ( d  [63:0] ),
+    .q                      ( q1  [6:0]  )
+);
+
+
+popcount64 #(
+    .LATENCY(2)
+    ) u_popcount64_2 (
+    .clk                    ( clk       ),
+    .en                     ( 1'b1      ),
+    .d                      ( d  [63:0] ),
+    .q                      ( q2  [6:0]  )
+);
+
+
+
+popcount64 #(
+    .LATENCY(3)
+    ) u_popcount64_3 (
+    .clk                    ( clk       ),
+    .en                     ( 1'b1      ),
+    .d                      ( d  [63:0] ),
+    .q                      ( q3  [6:0]  )
+);
+
 
 logic [31:0] i = 0;
 integer fd = 0;
 initial
 begin
 fd = $fopen("/dev/random","r");
-    in = 0;
-    #PERIOD
-    $display (out );
-    #PERIOD
-    in = 1;
-    #PERIOD
-    $display (out == 1);
-    #PERIOD
-    in = 2;
-    #PERIOD
-    $display (out == 1);
-    #PERIOD
-    in = 3;
-    #PERIOD
-    $display (out);
-    #PERIOD;
+
     seed = $fgetc(fd);
-    $display(seed);
     repeat(10) begin
-    in = {$urandom(seed),$urandom(seed)};
-    tmp = 0;
-    #PERIOD;
+    d = {$urandom(seed),$urandom(seed)};
+    answer = 0;
+    #(PERIOD*2);
     
     for(i = 0; i < 64 ; i = i+1)begin 
-        if (in[i]) tmp = tmp+1;
+        if (d[i]) answer = answer+1;
     end
-    $write("in = %X\n",in );
-    $write("out = %d\n",out );
-    $write("tmp = %d\n",tmp );
-    $write("%s\n",out==tmp ? "OK" : "NG");
-    // $display ();
+    $write("%s: ",q==answer ? "OK" : "NG");
+    $write("d=%X ",d );
+    $write("q=%d ",q );
+    $write("answer=%d\n",answer );
+    
     #PERIOD;
     end
     

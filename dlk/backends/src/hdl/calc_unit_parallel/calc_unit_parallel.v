@@ -33,50 +33,48 @@ module calc_unit_parallel #(
 );
 
 // stage1 
-wire    [5:0] in_xnor_kn_popcnt_wire0;
-wire    [5:0] in_xnor_kn_popcnt_wire1;
-wire    [5:0] neg_kn_popcnt_wire;
-reg    [5:0] in_xnor_kn_popcnt0 = 0;
-reg    [5:0] in_xnor_kn_popcnt1 = 0;
-reg    [5:0] neg_kn_popcnt = 0;
-
-// TODO: 現状組合わせ回路(0レイテンシ)だが、１つレジスタを挟む事も考える。
-popcount32  u0(~(in_buf_rdata0 ^ kn_buf_rdata) , in_xnor_kn_popcnt_wire0);
-popcount32  u1(~(in_buf_rdata1 ^ kn_buf_rdata) , in_xnor_kn_popcnt_wire1);
-popcount32  u2(~                 kn_buf_rdata  , neg_kn_popcnt_wire);
-
+wire    [5:0] in_xnor_kn_popcnt0;
+wire    [5:0] in_xnor_kn_popcnt1;
+wire    [5:0] neg_kn_popcnt;
 reg tmp_we = 0;
 reg tmp_en = 0;
 reg tmp_reset = 1;
+
+
+// TODO: 現状組合わせ回路(0レイテンシ)だが、１つレジスタを挟む事も考える。
+popcount32 #(
+    .LATENCY(1)
+    ) u0(
+    .clk(clk),
+    .en(en),
+    .d(~(in_buf_rdata0 ^ kn_buf_rdata) ),
+    .q(in_xnor_kn_popcnt0)
+    );
+popcount32 #(
+    .LATENCY(1)
+    ) u1(
+    .clk(clk),
+    .en(en),
+    .d(~(in_buf_rdata1 ^ kn_buf_rdata) ),
+    .q(in_xnor_kn_popcnt1)
+    );
+popcount32 #(
+    .LATENCY(1)
+    ) u2(
+    .clk(clk),
+    .en(en),
+    .d(~                 kn_buf_rdata  ),
+    .q(neg_kn_popcnt)
+    );
 always @(posedge clk ) begin
-    if(en)begin
-    in_xnor_kn_popcnt0 <= in_xnor_kn_popcnt_wire0;
-    in_xnor_kn_popcnt1 <= in_xnor_kn_popcnt_wire1;
-    neg_kn_popcnt <= neg_kn_popcnt_wire;
-    end
+  tmp_we <= we;
+  tmp_en <= en;
+  tmp_reset <= reset;
 end
 
-reg pre_we = 0;
-reg pre_en = 0;
-reg pre_reset = 1;
 
 
-
-// setting addr
-always @(posedge clk ) begin
-  pre_we <= we;
-  pre_en <= en;
-  pre_reset <= reset;
-end
-
-
-// calculating popcount
-always @(posedge clk ) begin
-  tmp_we <= pre_we;
-  tmp_en <= pre_en;
-  tmp_reset <= pre_reset;
-end
-
+// stage2
 wire [OUT_WIDTH-1:0] diff = $signed(in_xnor_kn_popcnt0) + $signed(in_xnor_kn_popcnt1)*2 - neg_kn_popcnt * 3;
 wire [OUT_WIDTH-1:0] data_wire;
 assign data_wire = $signed(in_xnor_kn_popcnt0) + $signed(in_xnor_kn_popcnt1)*2 - neg_kn_popcnt * 3 + (tmp_reset ? 0: data);
